@@ -14,12 +14,8 @@ function getComputerChoice(num){
     }
 }
 
-let humanScore = 0;
-let computerScore = 0;
-
 function playRound(humanChoice) {
     let computerChoice = getComputerChoice(2)
-    console.log("You has chosen " + humanChoice);
     console.log("The computer has chosen " + computerChoice);
 
     if (humanChoice === computerChoice) {
@@ -30,15 +26,18 @@ function playRound(humanChoice) {
         (humanChoice === "scissors" && computerChoice === "paper")
     ) {
         console.log("You have won this round, " + humanChoice + " beats " + computerChoice);
-        humanScore++;
     } else {
         console.log("You lost this round, " + computerChoice + " beats " + humanChoice);
-        computerScore++;
     }
-    return [humanScore, computerScore];
+    const container = document.querySelector("#container");
+
+    const message = document.createElement("div");
+    message.style.cssText = "color: blue; background: white; margin-top: 10px;";
+    message.setAttribute("id", "message");
+    message.textContent = "You has chosen " + humanChoice;
+    return container.appendChild(message);
 }
 
 rock.addEventListener("click", () => playRound("rock"));
 paper.addEventListener("click", () => playRound("paper"));
 scissors.addEventListener("click", () => playRound("scissors"));
-
