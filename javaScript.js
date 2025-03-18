@@ -14,30 +14,35 @@ function getComputerChoice(num){
     }
 }
 
-function playRound(humanChoice) {
+const container = document.querySelector("#container");
+let div = document.createElement("div");
+let message = document.createElement("p");
+let message2 = document.createElement("p");
+let message3 = document.createElement("p");
+
+function playRound(container,div, message, message2, message3, humanChoice) {
     let computerChoice = getComputerChoice(2)
-    console.log("The computer has chosen " + computerChoice);
+    div.style.cssText = "color: green; background: white; margin-top: 10px;";
+    div.setAttribute("id", "message");
+    div.textContent = "You has chosen " + humanChoice;
+    container.appendChild(div);
 
     if (humanChoice === computerChoice) {
-        console.log("It's a tie, nobody wins");
+        message.textContent="It's a tie, nobody wins";
+        div.appendChild(message);
     } else if (
         (humanChoice === "rock" && computerChoice === "scissors") || 
         (humanChoice === "paper" && computerChoice === "rock") ||
         (humanChoice === "scissors" && computerChoice === "paper")
     ) {
-        console.log("You have won this round, " + humanChoice + " beats " + computerChoice);
+        message2.textContent="You have won this round, " + humanChoice + " beats " + computerChoice;
+        div.appendChild(message2);
     } else {
-        console.log("You lost this round, " + computerChoice + " beats " + humanChoice);
-    }
-    const container = document.querySelector("#container");
-
-    const message = document.createElement("div");
-    message.style.cssText = "color: blue; background: white; margin-top: 10px;";
-    message.setAttribute("id", "message");
-    message.textContent = "You has chosen " + humanChoice;
-    return container.appendChild(message);
+        message3.textContent="You lost this round, " + computerChoice + " beats " + humanChoice;
+        div.appendChild(message3)
+    }      
 }
 
-rock.addEventListener("click", () => playRound("rock"));
-paper.addEventListener("click", () => playRound("paper"));
-scissors.addEventListener("click", () => playRound("scissors"));
+rock.addEventListener("click", () => playRound(container, div, message, message2, message3, "rock"));
+paper.addEventListener("click", () => playRound(container, div, message, message2, message3, "paper"));
+scissors.addEventListener("click", () => playRound(container, div, message, message2, message3, "scissors"));
