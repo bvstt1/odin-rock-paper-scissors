@@ -10,6 +10,7 @@ function getComputerChoice(num){
     }
 }
 
+// HTML variables
 const container = document.querySelector("#container");
 const title = document.querySelector("#title");
 
@@ -22,11 +23,14 @@ let message = document.createElement("p");
 let message2 = document.createElement("p");
 let message3 = document.createElement("p");
 let numberOfWins = document.createElement("p");
+let refreshButton = document.createElement("button");
 
 let roundCont = 0;
 let humanWin = 0;
 let computerWin = 0;
 
+
+// Game
 function playRound(container,div, message, message2, message3, humanChoice, humanWin, computerWin) {
     let computerChoice = getComputerChoice(2)
     div.style.cssText = "color: green; background: white; margin-top: 10px; width: 390px; heigth: 200px; border-radius: 10px; display: flex; justify-content: center; align-items: center; flex-direction: column; padding: 10px";
@@ -45,7 +49,7 @@ function playRound(container,div, message, message2, message3, humanChoice, huma
         (humanChoice === "scissors" && computerChoice === "paper")
     ) {;
         message2.style.cssText="margin: 5px 0px";
-        message2.textContent="You have won this round, " + humanChoice + " beats " + computerChoice
+        message2.textContent="You win this round, " + humanChoice + " beats " + computerChoice
         div.appendChild(message2);
         humanWin++;
     } else {
@@ -70,28 +74,46 @@ function wins(title, numberOfWins, humanWin, computerWin){
     title.appendChild(numberOfWins);
 }
 
+function resultGame(resultMessage, pressTheButtonMessage, div, divEndGame, resetButton){
+    div.appendChild(divEndGame);
+    divEndGame.appendChild(resultMessage);
+    divEndGame.appendChild(pressTheButtonMessage);
+    divEndGame.appendChild(resetButton);
+    resetButton.addEventListener("click", (_) => {
+        location.reload();
+    });
+    console.log("You Win. Congratulations!");
+    rock.disabled = true;
+    paper.disabled = true;
+    scissors.disabled = true;
+    return;
+}
+
 function endGame(div, humanWin, computerWin){
-    let winMessage =document.createElement("p");
+    let divEndGame = document.createElement("div");
+    divEndGame.style.cssText = "display: flex; justify-content: center; align-items: center; flex-direction: column;"
+    let resultMessage =document.createElement("p");
+    resultMessage.style.cssText="margin: 10px; font-weight: 600;";
+    let pressTheButtonMessage = document.createElement("p");
+    pressTheButtonMessage.style.cssText="margin: 5px;";
+    let resetButton = document.createElement("button");
+    resetButton.style.cssText="height: 40px; width: auto; color: rgba(0, 0, 0, 0.73); margin-top: 10px;";
+    resetButton.textContent="Im the button bellow :D";
+
     if (humanWin === 5){
-        winMessage.textContent="You win, congratulation!";
-        div.appendChild(winMessage);
-        console.log("You Win. Congratulations!");
-        rock.disabled = true;
-        paper.disabled = true;
-        scissors.disabled = true;
+        resultMessage.textContent="You win, congratulation!";
+        pressTheButtonMessage.textContent="Press the button bellow to play again";
+        resultGame(resultMessage, pressTheButtonMessage, div, divEndGame, resetButton);
         return;
     }else if (computerWin === 5){
-        winMessage.textContent="You lose!";
-        div.appendChild(winMessage);
-        console.log("You lose!");
-        rock.disabled = true;
-        paper.disabled = true;
-        scissors.disabled = true;
+        resultMessage.textContent="You lose! F";
+        pressTheButtonMessage.textContent="Press the button bellow to play again"
+        resultGame(resultMessage, pressTheButtonMessage, div, divEndGame, resetButton);
         return;
     };
 }
 
-
+// Buttons to options
 rock.addEventListener("click", () => {
     roundCont = roundText(roundCont);
     [humanWin, computerWin] = playRound(container, div, message, message2, message3, "rock", humanWin, computerWin);
@@ -106,7 +128,6 @@ paper.addEventListener("click", () => {
 });
 scissors.addEventListener("click", () => {
     roundCont = roundText(roundCont);
-    wins(title, humanWin, computerWin);
     [humanWin, computerWin] = playRound(container, div, message, message2, message3, "scissors", humanWin, computerWin);
     wins(title, numberOfWins, humanWin, computerWin);
     endGame(div, humanWin,computerWin);
